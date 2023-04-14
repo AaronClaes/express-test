@@ -1,11 +1,22 @@
 const express = require("express");
 const app = express();
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+app.get("/", (req, res) => res.type("html").send(html));
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  /* options */
+});
 
+io.on("connection", (socket) => {
+  console.log("CONNECTED!!");
+});
+
+httpServer.listen(3000);
 
 const html = `
 <!DOCTYPE html>
@@ -56,4 +67,4 @@ const html = `
     </section>
   </body>
 </html>
-`
+`;
